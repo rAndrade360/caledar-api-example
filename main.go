@@ -92,7 +92,7 @@ func GetEvents(srv *calendar.Service) {
 	}
 }
 
-func CreateEvent(srv *calendar.Service) {
+func CreateEvent(srv *calendar.Service) (*calendar.Event, error) {
 	event := &calendar.Event{
 		Summary:     "Teste Calendar",
 		Location:    "800 Howard St., San Francisco, CA 94103",
@@ -112,8 +112,19 @@ func CreateEvent(srv *calendar.Service) {
 	event, err := srv.Events.Insert(calendarId, event).Do()
 	if err != nil {
 		log.Fatalf("Unable to create event. %v\n", err)
+		return nil, err
 	}
 	fmt.Printf("Event created: %s\n", event.HtmlLink)
+	return event, nil
+}
+
+func DeleteEvent(srv *calendar.Service, eventId string) {
+	err := srv.Events.Delete("primary", eventId).Do()
+	if err != nil {
+		log.Fatalf("Unable to retrieve next ten of the user's events: %v", err)
+	}
+
+	fmt.Printf("Event deleted: %s\n", eventId)
 }
 
 func main() {
@@ -135,6 +146,13 @@ func main() {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
 	}
 
+	event, err := CreateEvent(srv)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	GetEvents(srv)
+
+	DeleteEvent(srv, event.Id)
 
 }
