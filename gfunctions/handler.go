@@ -93,7 +93,7 @@ func CreateEvent(srv *calendar.Service) (*calendar.Event, error) {
 	event := &calendar.Event{
 		Summary:     "Teste Calendar",
 		Location:    "800 Howard St., San Francisco, CA 94103",
-		Description: "A chance to hear more about Google's developer products.",
+		Description: "A event create test",
 		Start: &calendar.EventDateTime{
 			DateTime: "2021-06-01T22:00:00-07:00",
 			TimeZone: "America/Sao_Paulo",
